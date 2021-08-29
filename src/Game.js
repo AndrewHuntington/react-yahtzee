@@ -46,6 +46,9 @@ class Game extends Component {
   }
 
   toggleLocked(idx) {
+    // guard against unlocking dice when 0 rolls are left
+    if (this.state.rollsLeft === 0) return;
+
     // toggle whether idx is in locked or not
     this.setState((st) => ({
       locked: [
@@ -81,7 +84,9 @@ class Game extends Component {
             <div className="Game-button-wrapper">
               <button
                 className="Game-reroll"
-                disabled={this.state.locked.every((x) => x)}
+                disabled={
+                  this.state.locked.every((x) => x) || this.state.rollsLeft <= 0
+                }
                 onClick={this.roll}
               >
                 {this.state.rollsLeft} Rerolls Left
