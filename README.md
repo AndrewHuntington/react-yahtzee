@@ -4,7 +4,7 @@ A simple Yahtzee game app built with React, JavaScript, and CSS.
 
 NOTE: This app was build using starter code provided by [The Modern React Bootcamp](https://www.udemy.com/course/modern-react-bootcamp) on Udemy. To get an idea of what was provided, please checkout the first commit, `Initial commit`.
 
-### [Try it live]()
+### [Try it live](https://andrewhuntington.github.io/react-yahtzee/)
 
 # Project Screen Shot
 
