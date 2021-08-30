@@ -1,10 +1,19 @@
 import React, { Component } from "react";
 import Dice from "./Dice";
 import ScoreTable from "./ScoreTable";
+import styled from "styled-components";
 import "./Game.css";
 
 const NUM_DICE = 5;
 const NUM_ROLLS = 3;
+
+// trying out the 'styled-components' library to replace h1.Game-gameover-text
+const GameOverText = styled.h1`
+  color: white;
+  font-weight: 100;
+  font-size: 2.5rem;
+  margin-top: 1rem;
+`;
 
 class Game extends Component {
   constructor(props) {
@@ -121,7 +130,7 @@ class Game extends Component {
           <h1 className="App-title">Yahtzee!</h1>
           {this.state.gameOver ? (
             <div>
-              <h1 className="Game-gameover-text">Game Over!</h1>
+              <GameOverText>Game Over!</GameOverText>
               <div className="Game-button-wrapper">
                 <button className="Game-reroll" onClick={this.gameReset}>
                   Play again?
