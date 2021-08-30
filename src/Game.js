@@ -54,8 +54,9 @@ class Game extends Component {
     this.animateRoll();
   }
 
-  // Not sure why async/await works, but it does...
+  // not sure why async/await works, but it does...
   async animateRoll() {
+    // use await so that the total score displays before making a new roll
     await this.setState({ rolling: true }, () => {
       setTimeout(this.roll, 1000);
     });

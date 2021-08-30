@@ -16,12 +16,14 @@ h2 {
   display: inline-block;
 }
 
+/* made into a styled component */
 /* .Game-gameover-text {
   color: white;
   font-weight: 100;
   font-size: 2.5rem;
   margin-top: 1rem;
 } */
+
 .Game-dice-section {
   width: 80%;
   margin-left: auto;
