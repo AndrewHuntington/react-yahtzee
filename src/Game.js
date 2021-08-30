@@ -124,6 +124,17 @@ class Game extends Component {
     window.location.reload();
   }
 
+  buttonDisplayText() {
+    const messages = [
+      "End Round",
+      "1 Reroll Left",
+      "2 Rerolls Left",
+      "Starting Round",
+    ];
+
+    return messages[this.state.rollsLeft];
+  }
+
   render() {
     return (
       <div className="Game">
@@ -152,11 +163,12 @@ class Game extends Component {
                   className="Game-reroll"
                   disabled={
                     this.state.locked.every((x) => x) ||
-                    this.state.rollsLeft <= 0
+                    this.state.rollsLeft <= 0 ||
+                    this.state.rolling
                   }
                   onClick={this.animateRoll}
                 >
-                  {this.state.rollsLeft} Rerolls Left
+                  {this.buttonDisplayText()}
                 </button>
               </div>
             </section>
@@ -166,6 +178,7 @@ class Game extends Component {
           doScore={this.doScore}
           scores={this.state.scores}
           totalScore={this.state.totalScore}
+          rolling={this.state.rolling}
         />
       </div>
     );

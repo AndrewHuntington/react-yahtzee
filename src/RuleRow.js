@@ -21,9 +21,12 @@ class RuleRow extends Component {
   }
 
   render() {
-    const { name, score, description } = this.props;
+    const { name, score, description, rolling } = this.props;
     return (
-      <tr className="RuleRow RuleRow-active" onClick={this.handleClick}>
+      <tr
+        className="RuleRow RuleRow-active"
+        onClick={rolling ? null : this.handleClick}
+      >
         <td className="RuleRow-name">{name}</td>
         <td className="RuleRow-score">
           {score === undefined ? description : score}
