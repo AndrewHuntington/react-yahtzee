@@ -119,6 +119,12 @@ class ScoreTable extends Component {
             </tbody>
           </table>
         </section>
+        <section className="ScoreTable-section ScoreTable-section-total">
+          <h2>Total Score: {this.props.totalScore}</h2>
+          <table cellSpacing="0">
+            <tbody></tbody>
+          </table>
+        </section>
       </div>
     );
   }

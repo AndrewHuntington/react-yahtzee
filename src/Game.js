@@ -29,11 +29,15 @@ class Game extends Component {
         yahtzee: undefined,
         chance: undefined,
       },
+      totalScore: 0,
+      gameOver: false,
     };
     this.roll = this.roll.bind(this);
     this.doScore = this.doScore.bind(this);
     this.toggleLocked = this.toggleLocked.bind(this);
     this.animateRoll = this.animateRoll.bind(this);
+    this.calcTotalScore = this.calcTotalScore.bind(this);
+    this.checkGameOver = this.checkGameOver.bind(this);
   }
 
   // called only after the very first render
@@ -41,10 +45,20 @@ class Game extends Component {
     this.animateRoll();
   }
 
-  animateRoll() {
-    this.setState({ rolling: true }, () => {
+  // Not sure why async/await works, but it does...
+  async animateRoll() {
+    await this.setState({ rolling: true }, () => {
       setTimeout(this.roll, 1000);
     });
+    this.calcTotalScore();
+    this.checkGameOver();
+  }
+
+  checkGameOver() {
+    const scoreValues = Object.values(this.state.scores);
+    if (scoreValues.every((e) => e !== undefined)) {
+      this.setState({ gameOver: true });
+    }
   }
 
   roll(evt) {
@@ -80,7 +94,24 @@ class Game extends Component {
       rollsLeft: NUM_ROLLS,
       locked: Array(NUM_DICE).fill(false),
     }));
-    this.roll();
+    this.animateRoll();
+  }
+
+  calcTotalScore() {
+    let total = 0;
+    for (const score in this.state.scores) {
+      if (this.state.scores[score] === undefined) {
+        total += 0;
+      } else {
+        total += this.state.scores[score];
+      }
+    }
+    this.setState({ totalScore: total });
+  }
+
+  gameReset() {
+    // reloads the page to reset the state to its initial values
+    window.location.reload();
   }
 
   render() {
@@ -88,29 +119,44 @@ class Game extends Component {
       <div className="Game">
         <header className="Game-header">
           <h1 className="App-title">Yahtzee!</h1>
-
-          <section className="Game-dice-section">
-            <Dice
-              dice={this.state.dice}
-              locked={this.state.locked}
-              handleClick={this.toggleLocked}
-              disabled={this.state.rollsLeft === 0}
-              rolling={this.state.rolling}
-            />
-            <div className="Game-button-wrapper">
-              <button
-                className="Game-reroll"
-                disabled={
-                  this.state.locked.every((x) => x) || this.state.rollsLeft <= 0
-                }
-                onClick={this.animateRoll}
-              >
-                {this.state.rollsLeft} Rerolls Left
-              </button>
+          {this.state.gameOver ? (
+            <div>
+              <h1 className="Game-gameover-text">Game Over!</h1>
+              <div className="Game-button-wrapper">
+                <button className="Game-reroll" onClick={this.gameReset}>
+                  Play again?
+                </button>
+              </div>
             </div>
-          </section>
+          ) : (
+            <section className="Game-dice-section">
+              <Dice
+                dice={this.state.dice}
+                locked={this.state.locked}
+                handleClick={this.toggleLocked}
+                disabled={this.state.rollsLeft === 0}
+                rolling={this.state.rolling}
+              />
+              <div className="Game-button-wrapper">
+                <button
+                  className="Game-reroll"
+                  disabled={
+                    this.state.locked.every((x) => x) ||
+                    this.state.rollsLeft <= 0
+                  }
+                  onClick={this.animateRoll}
+                >
+                  {this.state.rollsLeft} Rerolls Left
+                </button>
+              </div>
+            </section>
+          )}
         </header>
-        <ScoreTable doScore={this.doScore} scores={this.state.scores} />
+        <ScoreTable
+          doScore={this.doScore}
+          scores={this.state.scores}
+          totalScore={this.state.totalScore}
+        />
       </div>
     );
   }
